@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <link rel="stylesheet" href="/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+  />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <style>
+    /* Style buttons */
+    .buttonload {
+      /* background-color: #0e7490; */
+      background-color: #0e7490;
+      border: none; /* Remove borders */
+      color: white; /* White text */
+      padding: 12px 16px; /* Some padding */
+      border-radius: 5px;
+      font-weight: bold;
+      display: none;
+    }
+    .custom-select {
+      position: relative;
+      width: 100%;
+    }
+
+    .custom-select input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      outline: none;
+    }
+
+    .options {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      max-height: 150px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      border-top: none;
+      background: white;
+      display: none;
+      z-index: 10;
+    }
+
+    .option-item {
+      padding: 8px;
+      cursor: pointer;
+    }
+
+    .option-item:hover {
+      background: #f0f0f0;
+    }
+  </style>
+  <body>
+    <!-- Sidebar -->
+    <aside
+      class="sidebar"
+      id="sidebar"
+      role="navigation"
+      aria-label="Main navigation"
+    >
+      <div class="sidebar-header">
+        <div class="logo">📚</div>
+        <h1 class="app-title">LibraryHub</h1>
+        <button
+          class="sidebar-toggle"
+          id="sidebarToggle"
+          aria-label="Toggle sidebar"
+          aria-expanded="true"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="index.html" class="nav-item" data-icon="📊">
+          <span class="icon">📊</span>
+          <span class="label">Dashboard</span>
+        </a>
+        <a href="#" id="book_link" class="nav-item active" data-icon="📖">
+          <span class="icon">📖</span>
+          <span class="label">Books</span>
+        </a>
+        <a href="author.html" class="nav-item" data-icon="✍️">
+          <span class="icon">✍️</span>
+          <span class="label">Authors</span>
+        </a>
+        <a href="member.html" class="nav-item" data-icon="👥">
+          <span class="icon">👥</span>
+          <span class="label">Members</span>
+        </a>
+        <a href="borrowing.html" class="nav-item" data-icon="📤">
+          <span class="icon">📤</span>
+          <span class="label">Borrowings</span>
+        </a>
+        <a href="#" class="nav-item" data-icon="📈">
+          <span class="icon">📈</span>
+          <span class="label">Reports</span>
+        </a>
+        <a href="#" class="nav-item" data-icon="⚙️">
+          <span class="icon">⚙️</span>
+          <span class="label">Settings</span>
+        </a>
+      </nav>
+    </aside>
+    <div class="main-wrapper">
+      <!-- Top Bar -->
+      <header class="top-bar" role="banner">
+        <div class="search-container">
+          <input
+            type="text"
+            class="search-input"
+            placeholder="Search books, authors, genre ..."
+            aria-label="Search"
+          />
+          <span class="search-icon">🔍</span>
+        </div>
+
+        <div class="top-bar-actions">
+          <button class="icon-btn notification-btn" aria-label="Notifications">
+            🔔
+            <span class="notification-badge">3</span>
+          </button>
+
+          <div class="user-profile">
+            <img
+              src="/placeholder.svg?height=40&width=40"
+              alt="User avatar"
+              class="avatar"
+            />
+            <span class="user-name">Sarah Chen</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Books Table -->
+      <section class="table-section" aria-label="Books inventory">
+        <div class="section-header">
+          <h2 class="section-title">Books Inventory</h2>
+          <button
+            class="btn btn-secondary btn-sm"
+            id="createBookBtn"
+            aria-label="Create new book"
+          >
+            + Add Book
+          </button>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="data-table" role="table" aria-label="Books list">
+            <thead>
+              <tr>
+                <th role="columnheader" aria-sort="none">Cover</th>
+                <th role="columnheader" aria-sort="none">Title</th>
+                <th role="columnheader" aria-sort="none">Author</th>
+                <th role="columnheader" aria-sort="none">Genre</th>
+                <th role="columnheader" aria-sort="none">Description</th>
+                <th role="columnheader" aria-sort="none" style="width: 100px">
+                  ISBN
+                </th>
+                <th role="columnheader" aria-sort="none" style="width: 100px">
+                  Total Copies
+                </th>
+                <th role="columnheader" aria-sort="none" style="width: 120px">
+                  Available Copies
+                </th>
+                <th role="columnheader" aria-sort="none">Status</th>
+                <th role="columnheader" aria-sort="none" style="width: 120px">
+                  Published
+                </th>
+                <th role="columnheader">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="booksTableBody">
+              <!-- <tr id="booksTable">
+                <td>
+                  <a href="/book_infor.html">
+                    <img
+                      src="https://images.unsplash.com/photo-1641154748135-8032a61a3f80?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Ym9vayUyMGNvdmVyfGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=600"
+                      alt="Book cover"
+                      class="book-cover"
+                    />
+                  </a>
+                </td>
+                <td class="truncate"><strong>The Midnight Library</strong></td>
+                <td>Matt Haig</td>
+                <td>Fiction</td>
+                <td class="truncate">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Aspernatur quidem labore ullam libero nemo! Eveniet?
+                </td>
+                <td class="truncate">978-0020195719</td>
+                <td>97</td>
+                <td>97</td>
+                <td><span class="status-chip available">Available</span></td>
+                <td>2020-12-13</td>
+                <td>
+                  <button class="action-btn edit-btn" aria-label="Edit book">
+                    ✏️
+                  </button>
+                  <button
+                    class="action-btn delete-btn"
+                    aria-label="Delete book"
+                  >
+                    🗑️
+                  </button>
+                </td>
+              </tr> -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+          <button class="pagination-btn" id="btn_prev">← Prev</button>
+          <div class="pagination-info">
+            Page <span id="current_page"></span> of
+            <span id="totalPages"></span>
+          </div>
+          <button class="pagination-btn" id="btn_next" aria-label="Next page">
+            Next →
+          </button>
+        </div>
+      </section>
+    </div>
+    <!-- Create Book Modal -->
+    <div
+      class="modal"
+      id="createBookModal"
+      role="dialog"
+      aria-labelledby="createBookTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-overlay" id="bookModalOverlay"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="createBookTitle">Add New Book</h2>
+          <button
+            class="modal-close"
+            id="closeCreateBook"
+            aria-label="Close dialog"
+          >
+            ✕
+          </button>
+        </div>
+        <form class="modal-form" id="createBookForm">
+          <div class="form-group">
+            <label for="bookTitle">Title *</label>
+            <input
+              type="text"
+              id="bookTitle"
+              name="title"
+              required
+              placeholder="Enter book title"
+            />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="bookAuthor">Author *</label>
+              <input
+                type="text"
+                id="authorName"
+                placeholder="Type author name..."
+                autocomplete="off"
+              required/>
+              <input type="hidden" id="author_id" />
+              <ul id="authorList" class="suggestions"></ul>
+            </div>
+
+            <div class="form-group">
+              <label for="bookGenre">Genre *</label>
+              <select name="" id="bookGenre">
+                <option value="">select genre</option>
+                <option value="Historical Fiction">Historical Fiction</option>
+                <option value="Drama">Drama</option>
+                <option value="Mystery">Mystery</option>
+                <option value="Thriller">Thriller</option>
+                <option value="Romance">Romance</option>
+                <option value="Adventure">Adventure</option>
+                <option value="Fantasy">Fantasy</option>
+                <option value="Literary Fiction">Literary Fiction</option>
+                <option value="Science Fiction">Science Fiction</option>
+                <option value="Children">Children</option>
+                <option value="Crime">Crime</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="bookISBN">ISBN *</label>
+              <input
+                type="text"
+                id="bookISBN"
+                name="isbn"
+                required
+                placeholder="ISBN-13"
+              />
+            </div>
+            <div class="form-group">
+              <label for="bookPublished">Published Date *</label>
+              <input type="date" id="bookPublished" name="published" required />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="total_copy">Total Copy *</label>
+              <input
+                type="text"
+                id="total_copy"
+                name="total_copy"
+                required
+                placeholder="Total copies"
+              />
+            </div>
+            <div class="form-group">
+              <label for="available_copy">Available Copy *</label>
+              <input
+                type="text"
+                id="available_copy"
+                name="available_copy"
+                required
+              />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="price">Price *</label>
+              <input type="text" id="price" name="price" placeholder="Price" />
+            </div>
+
+            <div class="form-group">
+              <label>Status *</label>
+              <div>
+                <input type="radio" id="active" name="status" value="active" />
+                <label for="active">Active</label>
+
+                <input
+                  type="radio"
+                  id="inactive"
+                  name="status"
+                  value="inactive"
+                />
+                <label for="inactive">Inactive</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="bookCover">Book Cover</label>
+            <div class="file-upload">
+              <input type="file" id="bookCover" name="cover" accept="image/*" />
+              <div class="file-upload-preview" id="coverPreview">
+                <span>📷 No image selected</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="bookDescription">Description</label>
+            <textarea
+              id="bookDescription"
+              name="description"
+              placeholder="Brief book description..."
+              rows="3"
+            ></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              id="cancelCreateBook"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              id="create_book_submit"
+            >
+              Create Book
+            </button>
+            <button class="buttonload" id="buttonload">
+              <i class="fa fa-spinner fa-spin" style="margin-right: 5px"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- <script src="/script.js"></script> -->
+    <script></script>
+
+    <script src="/book.js"></script>
+  </body>
+</html>

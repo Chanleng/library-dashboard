@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <style>
+    .truncate {
+  overflow: hidden; /* hide overflow */
+  text-overflow: ellipsis; /* show ... */
+  white-space: nowrap; /* keep single line */
+}
+  </style>
+  <link rel="stylesheet" href="/styles.css" />
+  <body>
+    <!-- Sidebar -->
+    <aside
+      class="sidebar"
+      id="sidebar"
+      role="navigation"
+      aria-label="Main navigation"
+    >
+      <div class="sidebar-header">
+        <div class="logo">📚</div>
+        <h1 class="app-title">LibraryHub</h1>
+        <button
+          class="sidebar-toggle"
+          id="sidebarToggle"
+          aria-label="Toggle sidebar"
+          aria-expanded="true"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="index.html" class="nav-item" data-icon="📊">
+          <span class="icon">📊</span>
+          <span class="label">Dashboard</span>
+        </a>
+        <a href="book.html" class="nav-item" data-icon="📖">
+          <span class="icon">📖</span>
+          <span class="label">Books</span>
+        </a>
+        <a href="#" class="nav-item active" data-icon="✍️">
+          <span class="icon">✍️</span>
+          <span class="label">Authors</span>
+        </a>
+        <a href="member.html" class="nav-item" data-icon="👥">
+          <span class="icon">👥</span>
+          <span class="label">Members</span>
+        </a>
+        <a href="borrowing.html" class="nav-item" data-icon="📤">
+          <span class="icon">📤</span>
+          <span class="label">Borrowings</span>
+        </a>
+        <a href="#" class="nav-item" data-icon="📈">
+          <span class="icon">📈</span>
+          <span class="label">Reports</span>
+        </a>
+        <a href="#" class="nav-item" data-icon="⚙️">
+          <span class="icon">⚙️</span>
+          <span class="label">Settings</span>
+        </a>
+      </nav>
+    </aside>
+    <div class="main-wrapper">
+      <!-- Top Bar -->
+      <header class="top-bar" role="banner">
+        <div class="search-container">
+          <input
+            type="text"
+            class="search-input"
+            placeholder="Search authors"
+            aria-label="Search"
+          />
+          <span class="search-icon">🔍</span>
+        </div>
+
+        <div class="top-bar-actions">
+          <button class="icon-btn notification-btn" aria-label="Notifications">
+            🔔
+            <span class="notification-badge">3</span>
+          </button>
+         
+          <div class="user-profile">
+            <img
+              src="/placeholder.svg?height=40&width=40"
+              alt="User avatar"
+              class="avatar"
+            />
+            <span class="user-name">Sarah Chen</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Books Table -->
+      <section class="table-section" aria-label="Books inventory">
+        <div class="section-header">
+          <h2 class="section-title">Authors Inventory</h2>
+          <button
+            class="btn btn-secondary btn-sm"
+            id="AddAuthor"
+            aria-label="Create author"
+          >
+            + Add author
+          </button>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="data-table" role="table" aria-label="Authors list">
+            <thead>
+              <tr>
+                <th role="columnheader" aria-sort="none">
+                  <button class="sortable-header">Id</button>
+                </th>
+                <th role="columnheader" aria-sort="none">
+                  <button class="sortable-header">Name</button>
+                </th>
+                <th role="columnheader" aria-sort="none">
+                  <button class="sortable-header">Bio</button>
+                </th>
+                <th role="columnheader" aria-sort="none">
+                  <button class="sortable-header">Nationality</button>
+                </th>
+                <th role="columnheader">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="auhtorsTableBody">
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+          <button class="pagination-btn" id="btn-prev" aria-label="Previous page">
+            ← Prev
+          </button>
+          <div class="pagination-info">
+            Page <span id="current-page"></span> of
+            <span id="total-pages"></span>
+          </div>
+          <button class="pagination-btn" id="btn-next" aria-label="Next page">Next →</button>
+        </div>
+      </section>
+    </div>
+     <!-- Create Author Modal -->
+  <div class="modal" id="createAuthorModal" role="dialog" aria-labelledby="createAuthorTitle" aria-hidden="true">
+    <div class="modal-overlay" id="authorModalOverlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="createAuthorTitle">Add New Author</h2>
+        <button class="modal-close" id="closeCreateAuthor" aria-label="Close dialog">✕</button>
+      </div>
+      <form class="modal-form" id="createAuthorForm">
+        <div class="form-group">
+          <label for="authorName">Full Name *</label>
+          <input type="text" id="authorName" name="name" required placeholder="Author name">
+        </div>
+        <div class="form-group">
+          <label for="authorBiography">Biography</label>
+          <textarea id="authorBiography" name="biography" placeholder="Author biography..." rows="4"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="authorNationality">Nationality</label>
+          <input type="text" id="authorNationality" name="nationality" placeholder="e.g., American">
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" id="cancelCreateAuthor">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnCreateAuthor">Create Author</button>
+        </div>
+      </form>
+    </div>
+  </div>
+    <!-- <script src="/script.js"></script> -->
+    <script src="/author.js"></script>
+  </body>
+</html>

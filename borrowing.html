@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <link rel="stylesheet" href="/styles.css" />
+  <body>
+    <!-- Sidebar -->
+    <aside
+      class="sidebar"
+      id="sidebar"
+      role="navigation"
+      aria-label="Main navigation"
+    >
+      <div class="sidebar-header">
+        <div class="logo">📚</div>
+        <h1 class="app-title">LibraryHub</h1>
+        <button
+          class="sidebar-toggle"
+          id="sidebarToggle"
+          aria-label="Toggle sidebar"
+          aria-expanded="true"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="index.html" class="nav-item" data-icon="📊">
+          <span class="icon">📊</span>
+          <span class="label">Dashboard</span>
+        </a>
+        <a href="book.html" class="nav-item" data-icon="📖">
+          <span class="icon">📖</span>
+          <span class="label">Books</span>
+        </a>
+        <a href="author.html" class="nav-item" data-icon="✍️">
+          <span class="icon">✍️</span>
+          <span class="label">Authors</span>
+        </a>
+        <a href="member.html" class="nav-item" data-icon="👥">
+          <span class="icon">👥</span>
+          <span class="label">Members</span>
+        </a>
+        <a href="#" class="nav-item active" data-icon="📤">
+          <span class="icon">📤</span>
+          <span class="label">Borrowings</span>
+        </a>
+        <a href="#" class="nav-item" data-icon="📈">
+          <span class="icon">📈</span>
+          <span class="label">Reports</span>
+        </a>
+        <a href="#" class="nav-item" data-icon="⚙️">
+          <span class="icon">⚙️</span>
+          <span class="label">Settings</span>
+        </a>
+      </nav>
+    </aside>
+    <div class="main-wrapper">
+      <!-- Top Bar -->
+      <header class="top-bar" role="banner">
+        <div class="search-container">
+          <input
+            type="text"
+            class="search-input"
+            placeholder="Search books, authors, members..."
+            aria-label="Search"
+          />
+          <span class="search-icon">🔍</span>
+        </div>
+
+        <div class="top-bar-actions">
+          <button class="icon-btn notification-btn" aria-label="Notifications">
+            🔔
+            <span class="notification-badge">3</span>
+          </button>
+         
+          <div class="user-profile">
+            <img
+              src="/placeholder.svg?height=40&width=40"
+              alt="User avatar"
+              class="avatar"
+            />
+            <span class="user-name">Sarah Chen</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Books Table -->
+      <section class="table-section" aria-label="Books inventory">
+        <div class="section-header">
+          <h2 class="section-title">Borrowing Inventory</h2>
+          <button
+            class="btn btn-secondary btn-sm"
+            id="newBtn"
+            aria-label="Create new book"
+          >
+            + New
+          </button>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="data-table" role="table" aria-label="Books list">
+            <thead>
+              <tr>
+                <th role="columnheader" aria-sort="none">
+                  <button class="sortable-header">Id</button>
+                </th>
+                <th role="columnheader" aria-sort="none">
+                  <button class="sortable-header">Name</button>
+                </th>
+                <th role="columnheader" aria-sort="none">
+                  <button class="sortable-header">Email</button>
+                </th>
+                <th role="columnheader" aria-sort="none">
+                  <button class="sortable-header">Address</button>
+                </th>
+                <th role="columnheader" aria-sort="none">
+                  <button class="sortable-header">Membership_date</button>
+                </th>
+                <th role="columnheader" aria-sort="none">
+                  <button class="sortable-header">Status</button>
+                </th>
+
+                <th role="columnheader">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="booksTableBody">
+              <tr>
+                <td>1</td>
+                <td><strong>Chan Thear</strong></td>
+                <td>chanthear@gmail.com</td>
+
+                <td>Phnome Penh, Cambodia</td>
+                <td><span class="status-chip available">2020-12-13</span></td>
+                <td>active</td>
+                <td>
+                  <button class="action-btn edit-btn" aria-label="Edit book">
+                    ✏️
+                  </button>
+                  <button
+                    class="action-btn delete-btn"
+                    aria-label="Delete book"
+                  >
+                    🗑️
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination">
+          <button class="pagination-btn" aria-label="Previous page">
+            ← Prev
+          </button>
+          <div class="pagination-info">
+            Page <span id="currentPage">1</span> of
+            <span id="totalPages">5</span>
+          </div>
+          <button class="pagination-btn" aria-label="Next page">Next →</button>
+        </div>
+      </section>
+    </div>
+
+ <!-- Borrowing Management Modal -->
+    <div
+      class="modal"
+      id="borrowingModal"
+      role="dialog"
+      aria-labelledby="borrowingTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-overlay" id="borrowingModalOverlay"></div>
+      <div class="modal-content modal-lg">
+        <div class="modal-header">
+          <h2 id="borrowingTitle">Manage Borrowing</h2>
+          <button
+            class="modal-close"
+            id="closeBorrowing"
+            aria-label="Close dialog"
+          >
+            ✕
+          </button>
+        </div>
+
+        <div class="borrowing-content">
+          <form class="borrowing-form" id="borrowingForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="borrowMember">Member *</label>
+                <select id="borrowMember" required>
+                  <option value="">Select member</option>
+                  <option value="1">Sarah Chen - SC001</option>
+                  <option value="2">Mike Johnson - MJ002</option>
+                  <option value="3">Emma Wilson - EW003</option>
+                  <option value="4">John Smith - JS004</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="borrowBook">Book *</label>
+                <select id="borrowBook" required>
+                  <option value="">Select book</option>
+                  <option value="1">The Midnight Library</option>
+                  <option value="2">Project Hail Mary</option>
+                  <option value="3">Atomic Habits</option>
+                  <option value="4">Dune</option>
+                  <option value="5">The Hobbit</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="borrowDate">Borrow Date *</label>
+                <input type="date" id="borrowDate" required />
+              </div>
+              <div class="form-group">
+                <label for="dueDate">Due Date *</label>
+                <input type="date" id="dueDate" required />
+              </div>
+              <div class="form-group">
+                <label for="returnDate">Return Date</label>
+                <input type="date" id="returnDate" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="borrowStatus">Status *</label>
+                <select id="borrowStatus" required>
+                  <option value="">Select status</option>
+                  <option>Borrowed</option>
+                  <option>Returned</option>
+                  <option>Overdue</option>
+                </select>
+              </div>
+              <div class="form-group" style="flex: 2">
+                <label for="borrowNotes">Notes</label>
+                <input
+                  type="text"
+                  id="borrowNotes"
+                  placeholder="Add any notes..."
+                />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="borrowNotes">Notes</label>
+              <textarea
+                id="borrowNotes"
+                placeholder="Add any notes about this borrowing..."
+                rows="3"
+              ></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                id="cancelBorrowing"
+              >
+                Cancel
+              </button>
+              <button type="submit" class="btn btn-primary">
+                Save Borrowing Record
+              </button>
+            </div>
+          </form>
+
+          <!-- Borrow History -->
+          <div class="borrow-history">
+            <h3>Member Borrow History</h3>
+            <table class="history-table" id="borrowHistory">
+              <thead>
+                <tr>
+                  <th>Book Title</th>
+                  <th>Borrow Date</th>
+                  <th>Due Date</th>
+                  <th>Return Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>The Midnight Library</td>
+                  <td>2024-01-15</td>
+                  <td>2024-02-15</td>
+                  <td>2024-02-10</td>
+                  <td><span class="status-chip available">Returned</span></td>
+                </tr>
+                <tr>
+                  <td>Atomic Habits</td>
+                  <td>2024-02-01</td>
+                  <td>2024-03-01</td>
+                  <td>—</td>
+                  <td><span class="status-chip borrowed">Borrowed</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+   <script src="borrowing.js"></script>
+  </body>
+</html>
