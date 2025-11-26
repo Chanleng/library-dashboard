@@ -4,15 +4,99 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   </head>
   <body>
+    <table class="w-[500px] text-center border">
+      <thead class="border-b">
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Gender</th>
+          <th>Age</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody class="user-body"></tbody>
+    </table>
     <script>
-   
-        console.log('start')
-        setTimeout(()=>{
-          console.log('run after 2s')
-        }, 2000)
-        console.log('end')
+      function fetchUsers() {
+        const users = [
+          {
+            id: 1,
+            name: "im chanleng",
+            gender: "male",
+            age: 23,
+          },
+          {
+            id: 2,
+            name: "kun thea",
+            gender: "female",
+            age: 23,
+          },
+          {
+            id: 3,
+            name: "Vichka",
+            gender: "female",
+            age: 20,
+          },
+          {
+            id: 4,
+            name: "lihach kalip",
+            gender: "male",
+            age: 21,
+          },
+        ];
+        return users;
+      }
+
+      let users = fetchUsers();
+      function renderUsers(users) {
+        let row = "";
+        users.forEach((user) => {
+          row += `
+            <tr class="border-b">
+          <td>${user.id}</td>
+          <td>${user.name}</td>
+          <td>${user.gender}</td>
+          <td>${user.age}</td>
+          <td class="py-[10px]">
+            <button
+              class="rounded-md cursor-pointer font-medium text-white px-[20px] py-[5px] bg-green-600 hover:bg-green-500 edit-user"
+              data-id="${user.id}"
+            >
+              Edit
+            </button>
+            <button
+              class="rounded-md cursor-pointer font-medium text-white px-[20px] py-[5px] bg-red-600 hover:bg-red-500 delete-user"
+              data-id="${user.id}"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      `;
+        });
+        document.querySelector(".user-body").innerHTML = row;
+      }
+      renderUsers(users);
+
+      function handleDelete(id, row){
+        let userId = id
+        row.remove()
+      }
+
+      document.querySelector(".user-body").addEventListener("click", (e) => {
+        let row = e.target.closest("tr");
+        console.log(e.target);
+        console.log(row);
+        if (e.target.classList.contains("edit-user")) {
+          console.log(e.target.dataset.id);
+        }
+        if (e.target.classList.contains("delete-user")) {
+          handleDelete(e.target.dataset.id, row)
+        }
+      });
     </script>
   </body>
 </html>

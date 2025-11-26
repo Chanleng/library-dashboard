@@ -4,13 +4,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <style>
     .truncate {
-  overflow: hidden; /* hide overflow */
-  text-overflow: ellipsis; /* show ... */
-  white-space: nowrap; /* keep single line */
-}
+      overflow: hidden; /* hide overflow */
+      text-overflow: ellipsis; /* show ... */
+      white-space: nowrap; /* keep single line */
+    }
+    /* Style buttons */
+    .buttonload {
+      /* background-color: #0e7490; */
+      background-color: #0e7490;
+      border: none; /* Remove borders */
+      color: white; /* White text */
+      padding: 12px 16px; /* Some padding */
+      border-radius: 5px;
+      font-weight: bold;
+      display: none;
+    }
   </style>
   <link rel="stylesheet" href="/styles.css" />
   <body>
@@ -85,7 +101,7 @@
             🔔
             <span class="notification-badge">3</span>
           </button>
-         
+
           <div class="user-profile">
             <img
               src="/placeholder.svg?height=40&width=40"
@@ -129,54 +145,98 @@
                 <th role="columnheader">Actions</th>
               </tr>
             </thead>
-            <tbody id="auhtorsTableBody">
-            </tbody>
+            <tbody id="auhtorsTableBody"></tbody>
           </table>
         </div>
 
         <!-- Pagination -->
         <div class="pagination">
-          <button class="pagination-btn" id="btn-prev" aria-label="Previous page">
+          <button
+            class="pagination-btn"
+            id="btn-prev"
+            aria-label="Previous page"
+          >
             ← Prev
           </button>
           <div class="pagination-info">
             Page <span id="current-page"></span> of
             <span id="total-pages"></span>
           </div>
-          <button class="pagination-btn" id="btn-next" aria-label="Next page">Next →</button>
+          <button class="pagination-btn" id="btn-next" aria-label="Next page">
+            Next →
+          </button>
         </div>
       </section>
     </div>
-     <!-- Create Author Modal -->
-  <div class="modal" id="createAuthorModal" role="dialog" aria-labelledby="createAuthorTitle" aria-hidden="true">
-    <div class="modal-overlay" id="authorModalOverlay"></div>
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 id="createAuthorTitle">Add New Author</h2>
-        <button class="modal-close" id="closeCreateAuthor" aria-label="Close dialog">✕</button>
+    <!-- Create Author Modal -->
+    <div
+      class="modal"
+      id="createAuthorModal"
+      role="dialog"
+      aria-labelledby="createAuthorTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-overlay" id="authorModalOverlay"></div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 id="createAuthorTitle">Add New Author</h2>
+          <button
+            class="modal-close"
+            id="closeCreateAuthor"
+            aria-label="Close dialog"
+          >
+            ✕
+          </button>
+        </div>
+        <form class="modal-form" id="createAuthorForm">
+          <div class="form-group">
+            <label for="authorName">Full Name *</label>
+            <input
+              type="text"
+              id="authorName"
+              name="name"
+              required
+              placeholder="Author name"
+            />
+          </div>
+          <div class="form-group">
+            <label for="authorBiography">Biography</label>
+            <textarea
+              id="authorBiography"
+              name="biography"
+              placeholder="Author biography..."
+              rows="4"
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="authorNationality">Nationality</label>
+            <input
+              type="text"
+              id="authorNationality"
+              name="nationality"
+              placeholder="e.g., American"
+            />
+          </div>
+
+          <div class="form-actions">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              id="cancelCreateAuthor"
+            >
+              Cancel
+            </button>
+            <button class="buttonload" id="buttonload">
+              <i class="fa fa-spinner fa-spin" style="margin-right: 5px"></i>
+            </button>
+            <button type="submit" class="btn btn-primary" id="submitAuthor">
+              Create Author
+            </button>
+          </div>
+        </form>
       </div>
-      <form class="modal-form" id="createAuthorForm">
-        <div class="form-group">
-          <label for="authorName">Full Name *</label>
-          <input type="text" id="authorName" name="name" required placeholder="Author name">
-        </div>
-        <div class="form-group">
-          <label for="authorBiography">Biography</label>
-          <textarea id="authorBiography" name="biography" placeholder="Author biography..." rows="4"></textarea>
-        </div>
-
-        <div class="form-group">
-          <label for="authorNationality">Nationality</label>
-          <input type="text" id="authorNationality" name="nationality" placeholder="e.g., American">
-        </div>
-
-        <div class="form-actions">
-          <button type="button" class="btn btn-secondary" id="cancelCreateAuthor">Cancel</button>
-          <button type="submit" class="btn btn-primary" id="btnCreateAuthor">Create Author</button>
-        </div>
-      </form>
     </div>
-  </div>
     <!-- <script src="/script.js"></script> -->
     <script src="/author.js"></script>
   </body>

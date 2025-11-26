@@ -119,7 +119,7 @@ function loadPage(page = 1) {
       .then((data) => {
         let books = data.data;
         console.log(data);
-        document.getElementById("booksTableBody").innerHTML =""
+        document.getElementById("booksTableBody").innerHTML = "";
         books.map((book) => {
           document.getElementById("booksTableBody").innerHTML += `
            <tr id="booksTable">
