@@ -201,7 +201,7 @@ document.getElementById("auhtorsTableBody").addEventListener("click", (e) => {
       showCancelButton: true,
       icon: "question",
       confirmButtonText: "Yes, delete it",
-      concelButtonText: "Cacel",
+      cancelButtonText: "Cancel",
     }).then((e) => {
       if (e.isConfirmed) {
         handleDeleteAuthor(id, row);

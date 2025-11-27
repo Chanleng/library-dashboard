@@ -4,8 +4,31 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .truncate {
+      overflow: hidden; /* hide overflow */
+      text-overflow: ellipsis; /* show ... */
+      white-space: nowrap; /* keep single line */
+    }
+    /* Style buttons */
+    .buttonload {
+      /* background-color: #0e7490; */
+      background-color: #0e7490;
+      border: none; /* Remove borders */
+      color: white; /* White text */
+      padding: 12px 16px; /* Some padding */
+      border-radius: 5px;
+      font-weight: bold;
+      display: none;
+    }
+  </style>
   <body>
     <!-- Sidebar -->
     <aside
@@ -78,7 +101,7 @@
             🔔
             <span class="notification-badge">3</span>
           </button>
-      
+
           <div class="user-profile">
             <img
               src="/placeholder.svg?height=40&width=40"
@@ -91,7 +114,7 @@
       </header>
 
       <!-- Books Table -->
-      <section class="table-section" aria-label="Books inventory">
+      <section class="table-section" aria-label="Members inventory">
         <div class="section-header">
           <h2 class="section-title">Members Inventory</h2>
           <button
@@ -104,7 +127,7 @@
         </div>
 
         <div class="table-wrapper">
-          <table class="data-table" role="table" aria-label="Books list">
+          <table class="data-table" role="table" aria-label="Members list">
             <thead>
               <tr>
                 <th role="columnheader" aria-sort="none">
@@ -129,41 +152,26 @@
                 <th role="columnheader">Actions</th>
               </tr>
             </thead>
-            <tbody id="booksTableBody">
-              <tr>
-                <td>1</td>
-                <td><strong>Chan Thear</strong></td>
-                <td>chanthear@gmail.com</td>
-
-                <td>Phnome Penh, Cambodia</td>
-                <td><span class="status-chip available">2020-12-13</span></td>
-                <td>active</td>
-                <td>
-                  <button class="action-btn edit-btn" aria-label="Edit book">
-                    ✏️
-                  </button>
-                  <button
-                    class="action-btn delete-btn"
-                    aria-label="Delete book"
-                  >
-                    🗑️
-                  </button>
-                </td>
-              </tr>
-            </tbody>
+            <tbody id="tableMemberBody"></tbody>
           </table>
         </div>
 
         <!-- Pagination -->
         <div class="pagination">
-          <button class="pagination-btn" aria-label="Previous page">
+          <button
+            class="pagination-btn"
+            id="btnPrev"
+            aria-label="Previous page"
+          >
             ← Prev
           </button>
           <div class="pagination-info">
-            Page <span id="currentPage">1</span> of
-            <span id="totalPages">5</span>
+            Page <span id="currentPage"></span> of
+            <span id="totalPages"></span>
           </div>
-          <button class="pagination-btn" aria-label="Next page">Next →</button>
+          <button class="pagination-btn" aria-label="Next page" id="btnNext">
+            Next →
+          </button>
         </div>
       </section>
     </div>
@@ -189,13 +197,13 @@
         </div>
         <form class="modal-form" id="createMemberForm">
           <div class="form-group">
-            <label for="memberFirstName">Name *</label>
+            <label for="memberUserName">Name *</label>
             <input
               type="text"
-              id="memberFirstName"
-              name="firstName"
+              id="memberUserName"
+              name="userName"
               required
-              placeholder="First name"
+              placeholder="user name"
             />
           </div>
 
@@ -213,17 +221,6 @@
             <label for="address">Address *</label>
             <input type="text" id="address" name="address" required />
           </div>
-
-          <div class="form-group">
-            <label for="memberPhone">Phone</label>
-            <input
-              type="tel"
-              id="memberPhone"
-              name="phone"
-              placeholder="Phone number"
-            />
-          </div>
-
           <div class="form-group">
             <label for="memberJoinDate">Join Date *</label>
             <input type="date" id="memberJoinDate" name="joinDate" required />
@@ -231,13 +228,7 @@
           <div class="form-group">
             <label>Status *</label>
             <div>
-              <input
-                type="radio"
-                id="active"
-                name="status"
-                value="active"
-                required
-              />
+              <input type="radio" id="active" name="status" value="active" />
               <label for="active">Active</label>
 
               <input
@@ -245,7 +236,6 @@
                 id="inactive"
                 name="status"
                 value="inactive"
-                required
               />
               <label for="inactive">Inactive</label>
             </div>
@@ -259,7 +249,12 @@
             >
               Cancel
             </button>
-            <button type="submit" class="btn btn-primary">Create Member</button>
+            <button class="buttonload" id="buttonload">
+              <i class="fa fa-spinner fa-spin" style="margin-right: 5px"></i>
+            </button>
+            <button type="submit" id="btnSubmitmember" class="btn btn-primary">
+              Create Member
+            </button>
           </div>
         </form>
       </div>
